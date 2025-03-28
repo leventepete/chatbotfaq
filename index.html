@@ -47,21 +47,29 @@
     .message {
       margin: 8px 0;
       padding: 10px;
-      border-radius: 10px;
+      border-radius: 12px;
       max-width: 75%;
       white-space: pre-wrap;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
     }
     .user {
       text-align: right;
       background-color: #d1e7dd;
       margin-left: auto;
+      justify-content: flex-end;
     }
     .bot {
       text-align: left;
       background-color: #ffe5b4;
       margin-right: auto;
+      justify-content: flex-start;
       position: relative;
+    }
+    .avatar {
+      font-size: 20px;
     }
     .typing-indicator {
       display: inline-block;
@@ -116,10 +124,25 @@
     function addMessage(text, sender) {
       const msg = document.createElement('div');
       msg.className = `message ${sender}`;
-      msg.innerText = text;
+
+      const avatar = document.createElement('span');
+      avatar.className = 'avatar';
+      avatar.innerText = sender === 'bot' ? '🤖' : '🙋‍♂️';
+
+      const content = document.createElement('span');
+      content.innerText = text;
+
+      if (sender === 'user') {
+        msg.appendChild(content);
+        msg.appendChild(avatar);
+      } else {
+        msg.appendChild(avatar);
+        msg.appendChild(content);
+      }
+
       chat.appendChild(msg);
       chat.scrollTop = chat.scrollHeight;
-      return msg;
+      return content;
     }
 
     function showTypingIndicator() {
@@ -140,11 +163,11 @@
 
     function typeMessage(text, sender) {
       removeTypingIndicator();
-      const msg = addMessage('', sender);
+      const content = addMessage('', sender);
       let index = 0;
       function type() {
         if (index < text.length) {
-          msg.innerText += text.charAt(index);
+          content.innerText += text.charAt(index);
           index++;
           chat.scrollTop = chat.scrollHeight;
           setTimeout(type, 25);
