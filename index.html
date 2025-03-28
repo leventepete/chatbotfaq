@@ -48,6 +48,7 @@
       padding: 8px;
       border-radius: 5px;
       max-width: 70%;
+      white-space: pre-wrap;
     }
     .user {
       text-align: right;
@@ -58,6 +59,37 @@
       text-align: left;
       background-color: #f8d7da;
       margin-right: auto;
+      position: relative;
+    }
+    .typing-indicator {
+      display: inline-block;
+      margin-left: 5px;
+    }
+    .dot {
+      height: 8px;
+      width: 8px;
+      margin: 0 2px;
+      background-color: #888;
+      border-radius: 50%;
+      display: inline-block;
+      animation: blink 1.4s infinite both;
+    }
+    .dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+    .dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+    @keyframes blink {
+      0% {
+        opacity: 0.2;
+      }
+      20% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0.2;
+      }
     }
   </style>
 </head>
@@ -81,9 +113,40 @@
     function addMessage(text, sender) {
       const msg = document.createElement('div');
       msg.className = `message ${sender}`;
-      msg.innerText = text;
       chat.appendChild(msg);
       chat.scrollTop = chat.scrollHeight;
+      return msg;
+    }
+
+    function showTypingIndicator() {
+      const typing = document.createElement('div');
+      typing.className = 'message bot';
+      typing.id = 'typingIndicator';
+      typing.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
+      chat.appendChild(typing);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function removeTypingIndicator() {
+      const typing = document.getElementById('typingIndicator');
+      if (typing) {
+        typing.remove();
+      }
+    }
+
+    function typeMessage(text, sender) {
+      removeTypingIndicator();
+      const msg = addMessage('', sender);
+      let index = 0;
+      function type() {
+        if (index < text.length) {
+          msg.innerText += text.charAt(index);
+          index++;
+          chat.scrollTop = chat.scrollHeight;
+          setTimeout(type, 25); // Gépelési sebesség (ms)
+        }
+      }
+      type();
     }
 
     function botResponse(input) {
@@ -95,7 +158,8 @@
           break;
         }
       }
-      setTimeout(() => addMessage(reply, 'bot'), 500);
+      showTypingIndicator();
+      setTimeout(() => typeMessage(reply, 'bot'), 1000);
     }
 
     document.getElementById('sendBtn').addEventListener('click', () => {
@@ -115,9 +179,9 @@
 
     // Üdvözlő üzenet
     window.onload = () => {
-      addMessage("Szia! Kérdezz tőlem bátran. 😊 ", 'bot');
+      showTypingIndicator();
+      setTimeout(() => typeMessage("Szia! Kérdezz tőlem bátran. 😊", 'bot'), 1000);
     }
   </script>
 </body>
 </html>
-
