@@ -104,11 +104,11 @@
     const chat = document.getElementById('chat');
     const userInput = document.getElementById('userInput');
 
-    const faq = {
-      "Hogyan tudok FREI-be állítani egy megrendelést?": "Nagyon jó kérdés! <br> Keresd meg a megrendelést a Minden értékesítési rendelés táblában majd ha az a következő állapotok valamelyikében van nyomd meg a menüsoron a Véglegesítés gombot.<br> FREI-be véglegesíthető állapotok: ERF, KOR, LIEF_ABS...",
-      "hány nap szabadságom van": "Éves szinten 25 nap szabadság jár.",
-      "hol tudom módosítani a jelszavam": "A jelszó módosítást az IT portálon végezheted el."
-    };
+    const faq = [
+      { question: "hogyan tudok FREI-be állítani egy megrendelést?", answer: "Nagyon jó kérdés! Keresd meg a megrendelést a Minden értékesítési rendelés táblában majd ha az a következő állapotok valamelyikében van nyomd meg a menüsoron a Véglegesítés gombot. FREI-be véglegesíthető állapotok: ERF, KOR, LIEF_ABS...." },
+      { question: "hány nap szabadságom van", answer: "Éves szinten 25 nap szabadság jár." },
+      { question: "hol tudom módosítani a jelszavam", answer: "A jelszó módosítást az IT portálon végezheted el." }
+    ];
 
     function addMessage(text, sender) {
       const msg = document.createElement('div');
@@ -153,12 +153,21 @@
     function botResponse(input) {
       const question = input.toLowerCase().trim();
       let reply = "Elnézést, erre nincs válaszom. Kérlek, keresd az ügyfélszolgálatot.";
-      for (let key in faq) {
-        if (question.includes(key)) {
-          reply = faq[key];
-          break;
+      let maxMatch = 0;
+
+      faq.forEach(item => {
+        let matchCount = 0;
+        item.question.split(' ').forEach(word => {
+          if (question.includes(word)) {
+            matchCount++;
+          }
+        });
+        if (matchCount > maxMatch) {
+          maxMatch = matchCount;
+          reply = item.answer;
         }
-      }
+      });
+
       showTypingIndicator();
       setTimeout(() => typeMessage(reply, 'bot'), 1000);
     }
