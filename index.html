@@ -6,8 +6,8 @@
   <title>FAQ Chatbot</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f3f3f3;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
       display: flex;
       flex-direction: column;
       height: 100vh;
@@ -23,32 +23,34 @@
     #inputArea {
       display: flex;
       padding: 10px;
-      background-color: #eee;
+      background-color: #fff;
+      border-top: 1px solid #ddd;
     }
     #userInput {
       flex: 1;
-      padding: 8px;
+      padding: 10px;
       border: 1px solid #ccc;
-      border-radius: 4px;
+      border-radius: 8px;
     }
     #sendBtn {
-      padding: 8px 12px;
-      margin-left: 5px;
-      background-color: #4CAF50;
+      padding: 10px 16px;
+      margin-left: 8px;
+      background-color: #ff7f11;
       color: white;
       border: none;
-      border-radius: 4px;
+      border-radius: 8px;
       cursor: pointer;
     }
     #sendBtn:hover {
-      background-color: #45a049;
+      background-color: #e86c00;
     }
     .message {
-      margin: 5px 0;
-      padding: 8px;
-      border-radius: 5px;
-      max-width: 70%;
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 75%;
       white-space: pre-wrap;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
     .user {
       text-align: right;
@@ -57,7 +59,7 @@
     }
     .bot {
       text-align: left;
-      background-color: #f8d7da;
+      background-color: #ffe5b4;
       margin-right: auto;
       position: relative;
     }
@@ -105,9 +107,10 @@
     const userInput = document.getElementById('userInput');
 
     const faq = [
-      { question: "hogyan tudok FREI re állítani egy megrendelést", answer: "Nagyon jó kérdés! Keresd meg a megrendelést a Minden értékesítési rendelés táblában majd ha az a következő állapotok valamelyikében van nyomd meg a menüsoron a Véglegesítés gombot. FREI-be véglegesíthető állapotok: ERF, KOR, LIEF_ABS...." },
+      { question: "mikor kapok fizetést", answer: "A fizetés minden hónap 10-én érkezik." },
       { question: "hány nap szabadságom van", answer: "Éves szinten 25 nap szabadság jár." },
-      { question: "hol tudom módosítani a jelszavam", answer: "A jelszó módosítást az IT portálon végezheted el." }
+      { question: "hol tudom módosítani a jelszavam", answer: "A jelszó módosítást az IT portálon végezheted el." },
+      { question: "hogyan tudok frei be állítani egy megrendelést", answer: "Nagyon jó kérdés! Keresd meg a megrendelést a Minden értékesítési rendelés táblában, majd ha az a következő állapotok valamelyikében van, nyomd meg a menüsoron a Véglegesítés gombot.\n\nFREI-be véglegesíthető állapotok: ERF, KOR, LIEF_ABS." }
     ];
 
     function addMessage(text, sender) {
