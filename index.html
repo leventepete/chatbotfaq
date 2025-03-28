@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f3f3;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+    }
+    #chat {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      background-color: #fff;
+      border: 1px solid #ddd;
+    }
+    #inputArea {
+      display: flex;
+      padding: 10px;
+      background-color: #eee;
+    }
+    #userInput {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    #sendBtn {
+      padding: 8px 12px;
+      margin-left: 5px;
+    }
+    .message {
+      margin: 5px 0;
+    }
+    .user {
+      text-align: right;
+      color: blue;
+    }
+    .bot {
+      text-align: left;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div id="chat"></div>
+  <div id="inputArea">
+    <input type="text" id="userInput" placeholder="Írj ide egy kérdést...">
+    <button id="sendBtn">Küldés</button>
+  </div>
+
+  <script>
+    const chat = document.getElementById('chat');
+    const userInput = document.getElementById('userInput');
+
+    const faq = {
+      "mikor kapok fizetést": "A fizetés minden hónap 10-én érkezik.",
+      "hány nap szabadságom van": "Éves szinten 25 nap szabadság jár.",
+      "hol tudom módosítani a jelszavam": "A jelszó módosítást az IT portálon végezheted el."
+    };
+
+    function addMessage(text, sender) {
+      const msg = document.createElement('div');
+      msg.className = `message ${sender}`;
+      msg.innerText = text;
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function botResponse(input) {
+      const question = input.toLowerCase().trim();
+      let reply = "Elnézést, erre nincs válaszom. Kérlek, keresd az ügyfélszolgálatot.";
+      for (let key in faq) {
+        if (question.includes(key)) {
+          reply = faq[key];
+          break;
+        }
+      }
+      addMessage(reply, 'bot');
+    }
+
+    document.getElementById('sendBtn').addEventListener('click', () => {
+      const input = userInput.value;
+      if (input) {
+        addMessage(input, 'user');
+        botResponse(input);
+        userInput.value = '';
+      }
+    });
+
+    userInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        document.getElementById('sendBtn').click();
+      }
+    });
+  </script>
+</body>
+</html>
