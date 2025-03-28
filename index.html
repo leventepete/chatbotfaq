@@ -113,6 +113,7 @@
     function addMessage(text, sender) {
       const msg = document.createElement('div');
       msg.className = `message ${sender}`;
+      msg.innerText = text;
       chat.appendChild(msg);
       chat.scrollTop = chat.scrollHeight;
       return msg;
@@ -143,7 +144,7 @@
           msg.innerText += text.charAt(index);
           index++;
           chat.scrollTop = chat.scrollHeight;
-          setTimeout(type, 25); // Gépelési sebesség (ms)
+          setTimeout(type, 25);
         }
       }
       type();
@@ -163,7 +164,7 @@
     }
 
     document.getElementById('sendBtn').addEventListener('click', () => {
-      const input = userInput.value;
+      const input = userInput.value.trim();
       if (input) {
         addMessage(input, 'user');
         botResponse(input);
@@ -177,7 +178,6 @@
       }
     });
 
-    // Üdvözlő üzenet
     window.onload = () => {
       showTypingIndicator();
       setTimeout(() => typeMessage("Szia! Kérdezz tőlem bátran. 😊", 'bot'), 1000);
